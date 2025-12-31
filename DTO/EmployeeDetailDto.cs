@@ -6,6 +6,7 @@ using System.Web;
 
 namespace Learn.DTO
 {
+    [DataContract]
     public class EmployeeDetailDto
     {
         [DataMember] public int EmployeeDetailId { get; set; } // EmployeeId

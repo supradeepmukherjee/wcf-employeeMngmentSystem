@@ -14,9 +14,11 @@ namespace Learn
         [OperationContract] List<DepartmentDto> GetAllDepartments();
         [OperationContract] DepartmentDto GetDepartmentById(int id);
         [OperationContract] DepartmentDto CreateDepartment(DepartmentDto dto);
+        [OperationContract] DepartmentDto UpdateDepartment(DepartmentDto dto);
         [OperationContract] bool DeleteDepartment(int id);
 
         [OperationContract] List<EmployeeDto> GetAllEmployees();
+        [OperationContract] List<EmployeeDto> GetEmployeesByDepartmentId(int departmentId);
         [OperationContract] EmployeeDto GetEmployeeById(int id);
         [OperationContract] EmployeeDto CreateEmployee(EmployeeDto dto);
         [OperationContract] EmployeeDto UpdateEmployee(EmployeeDto dto);
@@ -26,11 +28,15 @@ namespace Learn
         [OperationContract] EmployeeDetailDto CreateOrUpdateEmployeeDetail(EmployeeDetailDto dto);
 
         [OperationContract] List<ProjectDto> GetAllProjects();
+        [OperationContract] ProjectDto GetProjectById(int id);
         [OperationContract] ProjectDto CreateProject(ProjectDto dto);
+        [OperationContract] ProjectDto UpdateProject(ProjectDto dto);
+        [OperationContract] bool DeleteProject(int id);
         [OperationContract] bool AssignEmployeeToProject(int employeeId, int projectId);
         [OperationContract] bool RemoveEmployeeFromProject(int employeeId, int projectId);
 
         [OperationContract] DepartmentDto GetDepartmentWithEmployees(int departmentId);
         [OperationContract] ProjectDto GetProjectWithEmployees(int projectId);
+        [OperationContract] List<ProjectDto> GetProjectsForEmployee(int employeeId);
     }
 }

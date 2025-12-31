@@ -114,6 +114,22 @@ namespace Learn
             }
         }
 
+        public bool DeleteProject(int id)
+        {
+            using (var ctx = new EmployeeMgmtDBEntities1())
+            {
+                var project = ctx.Projects.Find(id);
+                if (project == null) return false;
+
+                var links = ctx.EmployeeProjects.Where(ep => ep.ProjectId == id).ToList();
+                if (links.Any()) ctx.EmployeeProjects.RemoveRange(links);
+
+                ctx.Projects.Remove(project);
+                ctx.SaveChanges();
+                return true;
+            }
+        }
+
         public List<DepartmentDto> GetAllDepartments()
         {
             using (var ctx = new EmployeeMgmtDBEntities1())
@@ -183,6 +199,39 @@ namespace Learn
             }
         }
 
+        public List<EmployeeDto> GetEmployeesByDepartmentId(int departmentId)
+        {
+            using (var ctx = new EmployeeMgmtDBEntities1())
+            {
+                return ctx.Employees
+                          .Where(e => e.DepartmentId == departmentId)
+                          .Select(e => e.ToDto())
+                          .ToList();
+            }
+        }
+
+        public ProjectDto GetProjectById(int id)
+        {
+            using (var ctx = new EmployeeMgmtDBEntities1())
+            {
+                var p = ctx.Projects.Find(id);
+                return p?.ToDtoWithoutEmployees();
+            }
+        }
+
+        public List<ProjectDto> GetProjectsForEmployee(int employeeId)
+        {
+            using (var ctx = new EmployeeMgmtDBEntities1())
+            {
+                return ctx.EmployeeProjects
+                          .Where(ep => ep.EmployeeId == employeeId)
+                          .Select(ep => ep.Project)
+                          .Distinct()
+                          .Select(p => p.ToDtoWithoutEmployees())
+                          .ToList();
+            }
+        }
+
         public ProjectDto GetProjectWithEmployees(int projectId)
         {
             using (var ctx = new EmployeeMgmtDBEntities1())
@@ -204,6 +253,18 @@ namespace Learn
             }
         }
 
+        public DepartmentDto UpdateDepartment(DepartmentDto dto)
+        {
+            using (var ctx = new EmployeeMgmtDBEntities1())
+            {
+                var d = ctx.Departments.Find(dto.DepartmentId);
+                if (d == null) return null;
+                d.Name = dto.Name;
+                ctx.SaveChanges();
+                return d.ToDtoWithoutEmployees();
+            }   
+        }
+
         public EmployeeDto UpdateEmployee(EmployeeDto dto)
         {
             using (var ctx = new EmployeeMgmtDBEntities1())
@@ -216,6 +277,19 @@ namespace Learn
                 e.DepartmentId = dto.DepartmentId;
                 ctx.SaveChanges();
                 return e.ToDto();
+            }
+        }
+
+        public ProjectDto UpdateProject(ProjectDto dto)
+        {
+            using (var ctx = new EmployeeMgmtDBEntities1())
+            {
+                var p = ctx.Projects.Find(dto.ProjectId);
+                if (p == null) return null;
+                p.Title = dto.Title;
+                p.Description = dto.Description;
+                ctx.SaveChanges();
+                return p.ToDtoWithoutEmployees();
             }
         }
     }

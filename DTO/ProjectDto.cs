@@ -6,11 +6,12 @@ using System.Web;
 
 namespace Learn.DTO
 {
+    [DataContract]
     public class ProjectDto
     {
         [DataMember] public int ProjectId { get; set; }
         [DataMember] public string Title { get; set; }
         [DataMember] public string Description { get; set; }
-        [DataMember] public List<EmployeeDto> Employees { get; set; } = new List<EmployeeDto>();
+        [DataMember] public List<EmployeeDto> Employees { get; set; }
     }
 }
